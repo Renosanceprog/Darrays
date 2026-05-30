@@ -154,6 +154,21 @@ public:
         }
         return item;
     }
+//=== REVERSE ============================================================
+void reverse(){
+    int p1 = 0;
+    int p2 = darr_count-1;
+    if (darr_count < 2) return;
+    while (p1 != p2+1)
+    {
+        int temp = head[p1];
+        head[p1] = head[p2];
+        head[p2] = temp;
+
+        p1++;
+        p2--;
+    }
+}
 
 //=== self implementations ========================================
     int* start(){
@@ -172,12 +187,10 @@ public:
 };
 
 int main(){   
-    int digits[] = {1,2,3,4,6};
+    int digits[] = {1,2};
     darray nums(digits);
     nums.debugprint();
-    nums.insert(4,5);
-    nums.debugprint();
-    nums.remove(3);
+    nums.reverse();
     nums.debugprint();
     printf("exit succesfully...");
 }
