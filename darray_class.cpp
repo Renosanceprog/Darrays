@@ -159,7 +159,7 @@ void reverse(){
     int p1 = 0;
     int p2 = darr_count-1;
     if (darr_count < 2) return;
-    while (p1 != p2+1)
+    while (p1 < p2)
     {
         int temp = head[p1];
         head[p1] = head[p2];
@@ -187,7 +187,7 @@ void reverse(){
 };
 
 int main(){   
-    int digits[] = {1,2};
+    int digits[] = {1,2,3,4,5};
     darray nums(digits);
     nums.debugprint();
     nums.reverse();
