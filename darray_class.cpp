@@ -1,8 +1,7 @@
 #include <iostream>
 #include <stdio.h>
 #include <malloc.h>
-#include <stdlib.h> // Required for rand() and srand()
-#include <chrono> // Required for nanosecond precision timing
+
 
 class darray
 {
@@ -247,8 +246,10 @@ public:
 };
 
 int main(){
-    int num[] = {153, 348, 340, 79, 221, 437, 43, 53, 471, 400, 318, 418, 435, 433, 52, 120, 135, 484, 371, 289, 210, 408, 396, 350, 447, 141, 376, 146, 296, 391, 490, 258, 147, 76, 331, 313, 151, 256, 178, 23, 456, 97, 95, 59, 483, 219, 347, 441, 327, 274, 445, 414, 33, 275, 476, 106, 280, 148, 399, 113, 460, 31, 229, 9, 434, 486, 459, 28, 63, 163, 242, 103, 349, 57, 160, 21, 466, 22, 457, 241, 329, 138, 281, 222, 195, 373, 45, 372, 475, 200, 239, 497, 295, 430, 413, 235, 388, 54, 173, 485};
+    int num[] = {1,2,3,4,5,6,7,8,9,0};
     darray nums(num);
+    nums.debugprint();
+    nums.sort(true);
     nums.debugprint();
     printf("exit succesfully...");
 }
