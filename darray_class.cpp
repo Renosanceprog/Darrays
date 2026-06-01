@@ -1,6 +1,8 @@
 #include <iostream>
 #include <stdio.h>
 #include <malloc.h>
+#include <stdlib.h> // Required for rand() and srand()
+#include <chrono> // Required for nanosecond precision timing
 
 class darray
 {
@@ -8,6 +10,36 @@ private:
     int  capacity;
     int  darr_count;
     int* head;
+
+    void recursive(int* l, int* r){
+        if (l >= r) return;
+        int* newpivot = pivotsplit(l,r);
+        recursive(l,newpivot-1);
+        recursive(newpivot+1,r);
+    }
+    int* pivotsplit(int* l, int* r){
+        int* pivotp = r;
+        int pivotv = *r;
+        r -= 1;
+        
+        while (true)
+        {
+            while (l <= r && *l < pivotv) l += 1;
+            while (r >= l && *r > pivotv) r -= 1;
+
+            if (l > r) break;
+
+            int temp = *l; *l = *r; *r = temp;
+
+            l += 1; r -= 1;
+        }
+
+        int temp = *l;
+        *l = *pivotp;
+        *pivotp = temp;
+
+        return l;
+    }
 public:
 //=== CONSTRUCTORS & DECONSTRUCTOR =========================================
     template <size_t N>
@@ -170,27 +202,11 @@ public:
         }
     }
 //=== SORT --- SELF IMPLENTED QUICKSORT COMPROMISE =======================
-    void quicksort(bool reversed=false){
+    void sort(bool reversed=false){
         recursive(head,head+darr_count-1);
         if(reversed) reverse();
     }
-    void recursive(int* l, int* r){
-        if (l >= r) return;
-        int* newpivot = pivotsplit(l,r);
-        recursive(l,newpivot-1);
-        recursive(newpivot+1,r);
-    }
-    int* pivotsplit(int* l, int* r){
-        while (l < r)
-        {
-            while (*l < *r) l+=1;
 
-            int temp = *l;
-            *l = *r;
-            *r = temp;
-        }
-        return l;
-    }
 //=== self implementations ========================================
     int* start(){
         return head;
@@ -231,10 +247,8 @@ public:
 };
 
 int main(){
-    int digits[] = {2,1};
-    darray nums(digits);
-    nums.debugprint();
-    nums.quicksort();
+    int num[] = {153, 348, 340, 79, 221, 437, 43, 53, 471, 400, 318, 418, 435, 433, 52, 120, 135, 484, 371, 289, 210, 408, 396, 350, 447, 141, 376, 146, 296, 391, 490, 258, 147, 76, 331, 313, 151, 256, 178, 23, 456, 97, 95, 59, 483, 219, 347, 441, 327, 274, 445, 414, 33, 275, 476, 106, 280, 148, 399, 113, 460, 31, 229, 9, 434, 486, 459, 28, 63, 163, 242, 103, 349, 57, 160, 21, 466, 22, 457, 241, 329, 138, 281, 222, 195, 373, 45, 372, 475, 200, 239, 497, 295, 430, 413, 235, 388, 54, 173, 485};
+    darray nums(num);
     nums.debugprint();
     printf("exit succesfully...");
 }
