@@ -155,21 +155,64 @@ public:
         return item;
     }
 //=== REVERSE ============================================================
-void reverse(){
-    int p1 = 0;
-    int p2 = darr_count-1;
-    if (darr_count < 2) return;
-    while (p1 < p2)
-    {
-        int temp = head[p1];
-        head[p1] = head[p2];
-        head[p2] = temp;
+    void reverse(){
+        int p1 = 0;
+        int p2 = darr_count-1;
+        if (darr_count < 2) return;
+        while (p1 < p2)
+        {
+            int temp = head[p1];
+            head[p1] = head[p2];
+            head[p2] = temp;
 
-        p1++;
-        p2--;
+            p1++;
+            p2--;
+        }
     }
-}
-
+//=== SORT --- SELF IMPLENTED QUICKSORT COMPROMISE =======================
+    void quicksort(){
+        recursive(head+darr_count-1,head,head+darr_count-2);
+    }
+    void recursive(int* pivot, int* l, int* r){
+        if (l >= r) return;
+        printf("\nphase 1...\n");
+        int* newpivot = pivotsplit(pivot,l,r);
+        printf("\nphase 2...\n");
+        recursive(newpivot-1,l,newpivot-1);
+        printf("\nphase 3...\n");
+        recursive(r+1,newpivot+1,r+1);
+    }
+    int* pivotsplit(int* pivot, int* l, int* r){
+        while (l < r)
+        {
+            printf("starting with left... L = %d, R = %d, pivot = %d\n", *l, *r, *pivot);
+            while (*l < *pivot)
+            {
+                l+=1;
+                printf("moving left... L = %d, R = %d, pivot = %d\n", *l, *r, *pivot);
+            }
+            printf("starting with right... L = %d, R = %d, pivot = %d\n", *l, *r, *pivot);
+            while (*r > *pivot)
+            {
+                r-=1;
+                printf("moving right...L = %d, R = %d, pivot = %d\n", *l, *r, *pivot);
+            }
+            if (l > r){
+                printf("commencing L <--> pivot swap...\n");
+                int temp = *pivot;
+                *pivot = *l;
+                *l = temp;
+            }
+            else{
+                printf("commencing L <--> R swap...\n");
+                int temp = *l;
+                *l = *r;
+                *r = temp;
+            }
+            debugprint();
+        }
+        return l;
+    }
 //=== self implementations ========================================
     int* start(){
         return head;
@@ -184,13 +227,36 @@ void reverse(){
         }
         printf("]\n");
     }
+
+    void zerout(){
+        for (size_t i = 0; i < darr_count; i++) head[i] = 0;
+    }
+
+    void copysize(darray& arr){
+        capacity = arr.capacity;
+        head = (int*)realloc(head, capacity * sizeof(int));
+    }
+    void copysize(darray& arr, bool matchSlots){
+        capacity = arr.capacity;
+        head = (int*)realloc(head, capacity * sizeof(int));
+        if (matchSlots)
+        {
+            if (arr.darr_count < darr_count){}
+            else{
+                int toAdd = arr.darr_count - darr_count;
+                for (size_t i = darr_count-1; i < (toAdd); i++) append(0);
+            }
+            darr_count = arr.darr_count;
+        }
+        
+    }
 };
 
-int main(){   
-    int digits[] = {1,2,3,4,5};
+int main(){
+    int digits[] = {4,2};
     darray nums(digits);
     nums.debugprint();
-    nums.reverse();
+    nums.quicksort();
     nums.debugprint();
     printf("exit succesfully...");
 }
