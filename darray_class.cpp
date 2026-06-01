@@ -170,46 +170,24 @@ public:
         }
     }
 //=== SORT --- SELF IMPLENTED QUICKSORT COMPROMISE =======================
-    void quicksort(){
-        recursive(head+darr_count-1,head,head+darr_count-2);
+    void quicksort(bool reversed=false){
+        recursive(head,head+darr_count-1);
+        if(reversed) reverse();
     }
-    void recursive(int* pivot, int* l, int* r){
+    void recursive(int* l, int* r){
         if (l >= r) return;
-        printf("\nphase 1...\n");
-        int* newpivot = pivotsplit(pivot,l,r);
-        printf("\nphase 2...\n");
-        recursive(newpivot-1,l,newpivot-1);
-        printf("\nphase 3...\n");
-        recursive(r+1,newpivot+1,r+1);
+        int* newpivot = pivotsplit(l,r);
+        recursive(l,newpivot-1);
+        recursive(newpivot+1,r);
     }
-    int* pivotsplit(int* pivot, int* l, int* r){
+    int* pivotsplit(int* l, int* r){
         while (l < r)
         {
-            printf("starting with left... L = %d, R = %d, pivot = %d\n", *l, *r, *pivot);
-            while (*l < *pivot)
-            {
-                l+=1;
-                printf("moving left... L = %d, R = %d, pivot = %d\n", *l, *r, *pivot);
-            }
-            printf("starting with right... L = %d, R = %d, pivot = %d\n", *l, *r, *pivot);
-            while (*r > *pivot)
-            {
-                r-=1;
-                printf("moving right...L = %d, R = %d, pivot = %d\n", *l, *r, *pivot);
-            }
-            if (l > r){
-                printf("commencing L <--> pivot swap...\n");
-                int temp = *pivot;
-                *pivot = *l;
-                *l = temp;
-            }
-            else{
-                printf("commencing L <--> R swap...\n");
-                int temp = *l;
-                *l = *r;
-                *r = temp;
-            }
-            debugprint();
+            while (*l < *r) l+=1;
+
+            int temp = *l;
+            *l = *r;
+            *r = temp;
         }
         return l;
     }
@@ -253,7 +231,7 @@ public:
 };
 
 int main(){
-    int digits[] = {4,2};
+    int digits[] = {2,1};
     darray nums(digits);
     nums.debugprint();
     nums.quicksort();
